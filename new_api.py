@@ -100,12 +100,12 @@ class NewApi(RawApi):
             n = int((end_timestamp - start_timestamp) / interval_timestamp)  # 计算可以获取的总信息条数
             print('预计本次获取{}条数据'.format(n))
             # 如果一次性获取的信息比较少
-            if n <= 600:
+            if n <= 24 * 12:
                 df = self.get_candles(self.exchange_id, interval, self.base_id, self.quote_id,
                                       start_timestamp, end_timestamp)
                 print(df)
             else:
-                one_time = 24 * 15  # 每次获取的数据数量
+                one_time = 24 * 12  # 每次获取的数据数量
                 times = int(n / one_time)
                 another = n % one_time
                 result_df = None  # 这个用于汇总所有的dataFrame
@@ -116,26 +116,30 @@ class NewApi(RawApi):
                                                                one_time) / 1000).strftime('%Y-%m-%d %H:%M:%S')
                     temp_df = self.get_candles(self.exchange_id, interval, self.base_id, self.quote_id,
                                                start_timestamp, start_timestamp + 1 * interval_timestamp * one_time)
-                    print('本次数据开始时间：{}, 结束时间：{}, 共获取数据{}条'.format(temp_start_time, temp_end_time, len(temp_df)))
+                    if temp_df is not None:
+                        print('本次数据开始时间：{}, 结束时间：{}, 共获取数据{}条'.format(temp_start_time,
+                                                                      temp_end_time, len(temp_df)))
+                        if i == 0:
+                            result_df = temp_df
+                        else:
+                            result_df = pd.concat([result_df, temp_df], axis=0)
                     start_timestamp += interval_timestamp * one_time  # 这里必须加1个间隔时间戳
                     time.sleep(random())
-                    if i == 0:
-                        result_df = temp_df
-                    else:
-                        result_df = pd.concat([result_df, temp_df], axis=0)
                 if another != 0:
                     temp_start_time = datetime.fromtimestamp(int(start_timestamp) / 1000).strftime('%Y-%m-%d %H:%M:%S')
                     temp_end_time = datetime.fromtimestamp(int(end_timestamp) / 1000).strftime('%Y-%m-%d %H:%M:%S')
-                    df = self.get_candles(self.exchange_id, interval, self.base_id, self.quote_id,
-                                          start_timestamp, end_timestamp)
-                    print('本次数据开始时间：{}, 结束时间：{}, 共获取数据{}条'.format(temp_start_time, temp_end_time, len(df)))
-                    result_df = pd.concat([result_df, df], axis=0)
+                    temp_df = self.get_candles(self.exchange_id, interval, self.base_id, self.quote_id,
+                                               start_timestamp, end_timestamp)
+                    if temp_df is not None:
+                        print('本次数据开始时间：{}, 结束时间：{}, 共获取数据{}条'.format(temp_start_time,
+                                                                      temp_end_time, len(temp_df)))
+                        result_df = pd.concat([result_df, temp_df], axis=0)
                 print('所有文件均下载完毕，已储存在py文件同路径')
                 result_df.to_csv('{}_{}_{}.csv'.format(self.exchange_id, self.symbol.replace('/', ''), interval),
                                  index=False, encoding='utf-8-sig')
 
 
 if __name__ == '__main__':
-    pprint(NewApi.get_exchange())
-    # api = NewApi('poloniex', 'BTC/USDT')
-    # api.get_k_lines('h1', '2017-01-01 01:00:00', '2017-01-30 01:00:00')
+    # pprint(NewApi.get_exchange())
+    api = NewApi('huobi', 'BTC/USDT')
+    api.get_k_lines('h1', '2017-01-01 01:00:00', '2020-08-20 01:00:00')
