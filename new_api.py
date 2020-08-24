@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 from random import random
 from raw_api import RawApi
+import os
 
 
 class NewApi(RawApi):
@@ -134,12 +135,15 @@ class NewApi(RawApi):
                         print('本次数据开始时间：{}, 结束时间：{}, 共获取数据{}条'.format(temp_start_time,
                                                                       temp_end_time, len(temp_df)))
                         result_df = pd.concat([result_df, temp_df], axis=0)
-                print('所有文件均下载完毕，已储存在py文件同路径')
-                result_df.to_csv('{}_{}_{}.csv'.format(self.exchange_id, self.symbol.replace('/', ''), interval),
+                print('所有文件均下载完毕，已储存在py文件data路径下')
+                result_df.to_csv('./data/{}_{}_{}.csv'.format(self.exchange_id, self.symbol.replace('/', ''), interval),
                                  index=False, encoding='utf-8-sig')
+                return result_df
 
 
 if __name__ == '__main__':
+    if not os.path.exists('data'):
+        os.mkdir('data')
     # pprint(NewApi.get_exchange())
     api = NewApi('huobi', 'BTC/USDT')
     api.get_k_lines('h1', '2017-01-01 01:00:00', '2020-08-20 01:00:00')
