@@ -4,6 +4,7 @@ from pprint import pprint
 import datetime
 import time
 from random import random
+import os
 
 
 class Data(object):
@@ -97,7 +98,7 @@ class Data(object):
         df = self.download_many_kline(time_interval)
         df = self.filter_many_kline(df, start_time=start_time, end_time=end_time)
         if isinstance(df, pd.DataFrame):
-            df.to_csv('bittrex_{}_{}_from_{}_to_{}.csv'.format(
+            df.to_csv('./data/bittrex_{}_{}_from_{}_to_{}.csv'.format(
                 self.symbol, self.interval, start_time, end_time))
         return df
 
@@ -150,6 +151,8 @@ class Data(object):
 
 
 if __name__ == '__main__':
+    if not os.path.exists('data'):
+        os.mkdir('data')
     da = Data('BTC/USDT', 'MINUTE_5')  # MINUTE_5，HOUR_1，DAY_1
     df1 = da.get_all_k_line('2020-07-01 01:00:00', '2020-07-04 01:00:00')
     # df1 = da.get_k_line('2020')
