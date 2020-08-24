@@ -3,7 +3,7 @@ import pandas as pd
 import time
 from datetime import datetime
 from random import random
-from api获取历史K线.raw_api import RawApi
+from raw_api import RawApi
 
 
 class NewApi(RawApi):
