@@ -99,7 +99,7 @@ class Data(object):
         df = self.filter_many_kline(df, start_time=start_time, end_time=end_time)
         if isinstance(df, pd.DataFrame):
             df.to_csv('./data/bittrex_{}_{}_from_{}_to_{}.csv'.format(
-                self.symbol, self.interval, start_time, end_time))
+                self.symbol, self.interval, start_time.replace(':', '_'), end_time.replace(':', '_')))
         return df
 
     def download_many_kline(self, time_interval: list):
