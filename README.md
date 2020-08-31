@@ -102,3 +102,4 @@ m1, m5, m15, m30, h1, h2, h4, h8, h12, d1, w1
 - 参考notebook文件，这个bittrex交易所可以获取到2015年之前的数据，不过有的没有交易量
 - 如果要逐笔订单，可以看看这个http://api.bitcoincharts.com/v1/csv/
 - 新增加了一个"bittrex.py"，可以一键获取bittrex交易所的历史K线数据
+- 新增加了一个"bitcoin_charts.py"，可以通过[下载](http://api.bitcoincharts.com/v1/csv/)原始的csv数据合成K线数据，该数据同样可以自定义时间间隔。
