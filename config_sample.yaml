@@ -1,0 +1,43 @@
+# 配置数据库
+db_config:
+    host: xxx.xxx.xxx.xxx
+    port: 3306
+    user: root
+    password: "*********"
+    database: API
+    charset: utf8
+
+# 配置交易币种
+exchange: huobi  # 火币交易所
+symbol_list:
+  - BTC/USDT
+  - ETH/USDT
+  - BCH/USDT
+  - HT/USDT
+  - LTC/USDT
+  - BSV/USDT
+  - EOS/USDT
+
+# 配置数据间隔
+interval_list:
+  - m15
+  - h1
+  - d1
+
+# 量化开始时间
+start_time: "2019-01-01 01:00:00"
+end_time: null
+
+# 是否开启代理
+proxy: false
+proxy_type: http
+proxy_url: "socks5://127.0.0.1:1089"
+
+# 单次获取数据数量
+once_num: 192  # 差不多就是8d的水平
+
+# 多线程数量
+multi_num: 4  # 4线程
+
+# log
+log_dir: log
