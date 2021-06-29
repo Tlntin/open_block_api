@@ -9,6 +9,27 @@
 5. 根据config.yaml，创建好数据库，默认是API数据库
 6. 运行sync.py文件，即可开始同步数据
 
+## 新增Docker容器
+- 封装了HT交易所自2019年初到2021年5月初的15min,1h,1d数据(1d不怎么准，不建议用)
+1. 打包Docker
+```bash
+docker build . -t ht_db
+```
+2. 启动容器-初始化数据
+```bash
+docker run --name ht_db -p 3307:3306 \
+        -e MYSQL_ROOT_PASSWORD=123456 \
+        -d ht_db
+```
+3. 查看启动日志
+```bash
+docker logs -f ht_db
+```
+4. 保险起见，去docker容器查看一番
+```bash
+docker exec -it ht_db /bin/bash
+```
+
 ## 注意
 1. 目前同步时间比较慢，请耐心等待。
 2. 暂不考虑为多币种启动多进程，后期可能会考虑。
