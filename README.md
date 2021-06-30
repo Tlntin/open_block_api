@@ -29,6 +29,13 @@ docker logs -f ht_db
 ```bash
 docker exec -it ht_db /bin/bash
 ```
+### 直接拉取Docker镜像
+```bash
+# 树莓派
+docker pull registry.cn-hangzhou.aliyuncs.com/tlntin/ht_db:arm64
+# 普通pc
+docker pull registry.cn-hangzhou.aliyuncs.com/tlntin/ht_db
+```
 
 ## 注意
 1. 目前同步时间比较慢，请耐心等待。

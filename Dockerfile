@@ -1,4 +1,4 @@
-FROM mysql:latest
+FROM mysql/mysql-server:latest
 
 USER root
 ENV WORK_PATH /usr/local/work
